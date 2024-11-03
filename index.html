@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Ancile API</title>
+    <meta name="description" content="Ancile API Documentation"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta property="og:title" content="Ancile API">
+    <meta property="og:description"
+          content="Ancile API Documentation">
+    <meta property="og:image"
+          content="https://user-images.githubusercontent.com/3975738/37729752-8a9ea38a-2d46-11e8-8438-42ed26bf1751.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>body {
+        margin: 0;
+        padding: 0;
+    }
+
+    redoc {
+        display: block;
+    }</style>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+
+    <!-- Start Single Page Apps for GitHub Pages -->
+    <script type="text/javascript">
+        // Single Page Apps for GitHub Pages
+        // MIT License
+        // https://github.com/rafgraph/spa-github-pages
+        // This script checks to see if a redirect is present in the query string,
+        // converts it back into the correct url and adds it to the
+        // browser's history using window.history.replaceState(...),
+        // which won't cause the browser to attempt to load the new url.
+        // When the single page app is loaded further down in this file,
+        // the correct url will be waiting in the browser's history for
+        // the single page app to route accordingly.
+        (function(l) {
+            if (l.search[1] === '/' ) {
+                var decoded = l.search.slice(1).split('&').map(function(s) {
+                    return s.replace(/~and~/g, '&')
+                }).join('?');
+                window.history.replaceState(null, null,
+                    l.pathname.slice(0, -1) + decoded + l.hash
+                );
+            }
+        }(window.location))
+    </script>
+</head>
+<body>
+<script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
+<div id="redoc-container"></div>
+
+<script>
+    Redoc.init('merged_openapi.yaml', {
+        "expandResponses": "200,400"
+    }, document.getElementById('redoc-container'))
+</script>
+
+</body>
+</html>

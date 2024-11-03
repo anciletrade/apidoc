@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  title: Trading API
+  version: 1.0.0
+  description: API for managing trade execution and real-time market data.
+
+paths:
+  /trades:
+    post:
+      summary: Place a trade
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradeRequest'
+      responses:
+        '200':
+          description: Trade executed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeResponse'
+
+  /market-data/{symbol}:
+    get:
+      summary: Retrieve real-time market data for a symbol
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Market data retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketData'
+
+components:
+  schemas:
+    TradeRequest:
+      type: object
+      properties:
+        symbol:
+          type: string
+        quantity:
+          type: number
+        action:
+          type: string
+          enum: [buy, sell]
+    TradeResponse:
+      type: object
+      properties:
+        tradeId:
+          type: string
+        status:
+          type: string
+    MarketData:
+      type: object
+      properties:
+        symbol:
+          type: string
+        price:
+          type: number
+        timestamp:
+          type: string

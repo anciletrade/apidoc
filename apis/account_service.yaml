@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+  title: User and Account Management API
+  version: 1.0.0
+  description: API for user onboarding, profile management, broker connection, and wallet operations.
+
+paths:
+  /users:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User registered successfully
+
+  /users/{userId}:
+    get:
+      summary: Retrieve user profile
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/{userId}/broker:
+    post:
+      summary: Connect user to a brokerage account
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                brokerAuthToken:
+                  type: string
+      responses:
+        '200':
+          description: Broker connected successfully
+
+  /wallets/{userId}:
+    get:
+      summary: Get wallet balance
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Wallet balance retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        brokerConnected:
+          type: boolean
+    Wallet:
+      type: object
+      properties:
+        userId:
+          type: string
+        balance:
+          type: number

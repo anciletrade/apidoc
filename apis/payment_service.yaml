@@ -1,0 +1,55 @@
+openapi: 3.0.0
+info:
+  title: Payment and Reimbursement API
+  version: 1.0.0
+  description: API for handling premium payments, reimbursements, and withdrawals.
+
+paths:
+  /payments:
+    post:
+      summary: Process a premium payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '200':
+          description: Payment processed successfully
+
+  /reimbursements/{userId}:
+    get:
+      summary: Get reimbursement history for a user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reimbursement history retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reimbursement'
+
+components:
+  schemas:
+    PaymentRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        amount:
+          type: number
+    Reimbursement:
+      type: object
+      properties:
+        reimbursementId:
+          type: string
+        amount:
+          type: number
+        date:
+          type: string

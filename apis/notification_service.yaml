@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: Notification and Reporting API
+  version: 1.0.0
+  description: API for sending notifications and generating daily reports.
+
+paths:
+  /notifications:
+    post:
+      summary: Send a notification to a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+      responses:
+        '200':
+          description: Notification sent
+
+  /reports/daily:
+    get:
+      summary: Generate a daily report
+      responses:
+        '200':
+          description: Daily report generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyReport'
+
+components:
+  schemas:
+    NotificationRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        message:
+          type: string
+    DailyReport:
+      type: object
+      properties:
+        reportId:
+          type: string
+        date:
+          type: string
+        summary:
+          type: string

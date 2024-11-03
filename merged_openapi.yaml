@@ -1,0 +1,310 @@
+openapi: 3.0.0
+info:
+  title: Ancile Insurance Platform API
+  description: API documentation for Ancile Insurance Platform, merged from individual
+    microservices.
+  version: 1.0.0
+paths:
+  /users:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User registered successfully
+      tags:
+      - Account
+  /users/{userId}:
+    get:
+      summary: Retrieve user profile
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      tags:
+      - Account
+  /users/{userId}/broker:
+    post:
+      summary: Connect user to a brokerage account
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                brokerAuthToken:
+                  type: string
+      responses:
+        '200':
+          description: Broker connected successfully
+      tags:
+      - Account
+  /wallets/{userId}:
+    get:
+      summary: Get wallet balance
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Wallet balance retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+      tags:
+      - Account
+  /notifications:
+    post:
+      summary: Send a notification to a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+      responses:
+        '200':
+          description: Notification sent
+      tags:
+      - Notification
+  /reports/daily:
+    get:
+      summary: Generate a daily report
+      responses:
+        '200':
+          description: Daily report generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyReport'
+      tags:
+      - Notification
+  /payments:
+    post:
+      summary: Process a premium payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '200':
+          description: Payment processed successfully
+      tags:
+      - Payment
+  /reimbursements/{userId}:
+    get:
+      summary: Get reimbursement history for a user
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Reimbursement history retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reimbursement'
+      tags:
+      - Payment
+  /trades:
+    post:
+      summary: Place a trade
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradeRequest'
+      responses:
+        '200':
+          description: Trade executed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeResponse'
+      tags:
+      - Trading
+  /market-data/{symbol}:
+    get:
+      summary: Retrieve real-time market data for a symbol
+      parameters:
+      - name: symbol
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Market data retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketData'
+      tags:
+      - Trading
+  /coverage-plans:
+    get:
+      summary: Get available insurance coverage plans
+      responses:
+        '200':
+          description: Coverage plans retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CoveragePlan'
+      tags:
+      - Insurance
+  /coverage/{userId}:
+    post:
+      summary: Activate insurance coverage for a user
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivateCoverageRequest'
+      responses:
+        '200':
+          description: Coverage activated
+      tags:
+      - Insurance
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        brokerConnected:
+          type: boolean
+    Wallet:
+      type: object
+      properties:
+        userId:
+          type: string
+        balance:
+          type: number
+    NotificationRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        message:
+          type: string
+    DailyReport:
+      type: object
+      properties:
+        reportId:
+          type: string
+        date:
+          type: string
+        summary:
+          type: string
+    PaymentRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        amount:
+          type: number
+    Reimbursement:
+      type: object
+      properties:
+        reimbursementId:
+          type: string
+        amount:
+          type: number
+        date:
+          type: string
+    TradeRequest:
+      type: object
+      properties:
+        symbol:
+          type: string
+        quantity:
+          type: number
+        action:
+          type: string
+          enum:
+          - buy
+          - sell
+    TradeResponse:
+      type: object
+      properties:
+        tradeId:
+          type: string
+        status:
+          type: string
+    MarketData:
+      type: object
+      properties:
+        symbol:
+          type: string
+        price:
+          type: number
+        timestamp:
+          type: string
+    CoveragePlan:
+      type: object
+      properties:
+        planId:
+          type: string
+        dailyCost:
+          type: number
+        maxCoverage:
+          type: number
+    ActivateCoverageRequest:
+      type: object
+      properties:
+        planId:
+          type: string
+        paymentId:
+          type: string
+tags:
+- name: Account
+- name: Notification
+- name: Payment
+- name: Trading
+- name: Insurance
