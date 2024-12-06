@@ -1,0 +1,8 @@
+title Trading and prediction
+
+
+UI->TradeService:Trade Placed
+TradeService->AI-Model:Real-Time detection of trade
+note over TradeService,AI-Model:Using **features** of **last 70 trades ** determine Behavior patterns, Risk metrics, Confidence score
+TradeService<--AI-Model:response with User Confidence score prediction
+AI-Model->HedgingService: User Risk metrics, Confidence score
